@@ -27,9 +27,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./parakeet
     steps:
       - uses: actions/checkout@v3
       - name: Cache node modules
@@ -38,10 +35,11 @@ jobs:
         with:
           path: ./parakeet/node_modules
           key: ${{ runner.os }}-node-cache-${{ hashFiles('**/package-lock.json') }}
-      - name: npm install
-        run: npm install
-      - name: build
-        run: npm run build
+      - name: npm commands
+        working-directory: ./parakeet
+        run: |
+          npm install
+          npm run build
       - uses: actions/upload-pages-artifact@v2
         with:
           name: parakeet
