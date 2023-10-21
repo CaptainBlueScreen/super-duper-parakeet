@@ -40,7 +40,7 @@ jobs:
         id: nodeCache
         uses: actions/cache@v3
         with:
-          path: ~/parakeet/node_modules
+          path: ./parakeet/node_modules
           key: ${{ runner.os }}-node-cache-${{ hashFiles('**/package-lock.json') }}
       - name: npm install
         run:  npm install
