@@ -43,6 +43,8 @@ jobs:
           path: ./parakeet/node_modules
           key: ${{ runner.os }}-node-cache-${{ hashFiles('**/package-lock.json') }}
       - name: npm install
-        run:  npm install
+        run: npm install
+      - name: build
+        run: npm run build
       - name: output2
         run: ls .
