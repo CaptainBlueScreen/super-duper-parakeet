@@ -28,20 +28,26 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./parakeet
     steps:
       - uses: actions/checkout@v3
+      - name: output1
+        run: |
+          ls .
+          ls ./dist
       - name: Cache node modules
         id: nodeCache
         uses: actions/cache@v3
         with:
-          path: ~/.npm
+          path: ~/parakeet/node_modules
           key: ${{ runner.os }}-node-cache-${{ hashFiles('**/package-lock.json') }}
       - name: npm install
-        run: |
-          npm install
+        run:  npm install
       - name: test
         run: npm test
       - name: build
         run: npm build
-      - name: output
-        run: ls .
+      - name: output2
+        run: ls ./dist
