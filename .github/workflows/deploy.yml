@@ -45,4 +45,4 @@ jobs:
       - name: npm install
         run:  npm install
       - name: output2
-        run: ls ./dist
+        run: ls .
