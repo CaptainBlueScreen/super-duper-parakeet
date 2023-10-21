@@ -39,8 +39,9 @@ jobs:
         working-directory: ./parakeet
         run: |
           npm install
-          npm run build
+          ng run build --base-href /super-duper-parakeet/
           ls ./dist -R
+          cat /dist/parakeet/index.html
       - uses: actions/upload-pages-artifact@v2
         with:
           name: parakeet
