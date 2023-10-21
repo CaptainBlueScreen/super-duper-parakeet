@@ -22,8 +22,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Single deploy job since we're just deploying
-  deploy:
+  build:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -33,9 +32,6 @@ jobs:
         working-directory: ./parakeet
     steps:
       - uses: actions/checkout@v3
-      - name: output1
-        run: |
-          ls .
       - name: Cache node modules
         id: nodeCache
         uses: actions/cache@v3
@@ -46,5 +42,7 @@ jobs:
         run: npm install
       - name: build
         run: npm run build
-      - name: output2
-        run: ls .
+      - uses: actions/upload-artifact@v3
+        with:
+          name: parakeet
+          path: ./parakeet/dist/
