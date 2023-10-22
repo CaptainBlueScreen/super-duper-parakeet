@@ -35,7 +35,7 @@ jobs:
           path: ./$APP_NAME/node_modules
           key: ${{ runner.os }}-$APP_NAME-node-cache-${{ hashFiles('**/package-lock.json') }}
       - name: npm commands
-        working-directory: ./$APP_NAME
+        working-directory: ./parakeet
         run: |
           npm install
           npm run build -- --base-href /super-duper-parakeet/
