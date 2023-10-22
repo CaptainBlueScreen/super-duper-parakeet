@@ -9,23 +9,22 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
+env:
+  APP_NAME: parakeet
+
 jobs:
   build:
+    permissions:
+      contents: read
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deploy.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -33,19 +32,17 @@ jobs:
         id: nodeCache
         uses: actions/cache@v3
         with:
-          path: ./parakeet/node_modules
-          key: ${{ runner.os }}-node-cache-${{ hashFiles('**/package-lock.json') }}
+          path: ./$APP_NAME/node_modules
+          key: ${{ runner.os }}-$APP_NAME-node-cache-${{ hashFiles('**/package-lock.json') }}
       - name: npm commands
-        working-directory: ./parakeet
+        working-directory: ./$APP_NAME
         run: |
           npm install
           npm run build -- --base-href /super-duper-parakeet/
-          ls ./dist -R
-          cat ./dist/parakeet/index.html
       - uses: actions/upload-pages-artifact@v2
         with:
-          name: parakeet
-          path: ./parakeet/dist/parakeet/
+          name: $APP_NAME
+          path: ./$APP_NAME/dist/$APP_NAME/
   deploy:
     # Add a dependency to the build job
     needs: build
@@ -67,4 +64,4 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v2 # or the latest "vX.X.X" version tag for this action
         with:
-          artifact_name: parakeet
+          artifact_name: $APP_NAME
