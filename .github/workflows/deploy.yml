@@ -58,6 +58,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub 
+        id: deployment
+        uses: actions/deploy-pages@v2
+        with:
+          artifact_name: ${{ vars.APP_NAME }}
   gcp:
     runs-on: ubuntu-latest
     steps:
