@@ -37,44 +37,13 @@ jobs:
         run: |
           npm install
           npm run build -- --base-href /${{ github.event.repository.name }}/
-      - uses: actions/upload-pages-artifact@v2
+      - name: 'Google auth'
+        id: 'auth'
+        uses: 'google-github-actions/auth@v1'
         with:
-          name: ${{ vars.APP_NAME }}
-          path: ./${{ vars.APP_NAME }}/dist/${{ vars.APP_NAME }}/
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write      # to deploy to Pages
-      id-token: write   # to verify the deployment originates from an appropriate source
-
-    # Deploy to the github-pages environment
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    # Specify runner + deployment step
-    steps:
-      - name: Deploy to GitHub 
-        id: deployment
-        uses: actions/deploy-pages@v2
+          workload_identity_provider: '${{ secrets.WIF_PROVIDER }}'
+          service_account: '${{ secrets.WIF_SERVICE_ACCOUNT }}'
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
         with:
-          artifact_name: ${{ vars.APP_NAME }}
-  gcp:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-     contents: 'read'
-     id-token: 'write'
-
-    steps:
-     - name: 'Google auth'
-       id: 'auth'
-       uses: 'google-github-actions/auth@v1'
-       with:
-         workload_identity_provider: '${{ secrets.WIF_PROVIDER }}'
-         service_account: '${{ secrets.WIF_SERVICE_ACCOUNT }}'
-     - name: 'Set up Cloud SDK'
-       uses: 'google-github-actions/setup-gcloud@v1'
-       with:
-         project_id: '${{ env.PROJECT_ID }}'
+          project_id: '${{ env.PROJECT_ID }}'
