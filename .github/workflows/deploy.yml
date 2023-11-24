@@ -15,14 +15,13 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
-env:
-  name: parakeet
-
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      name: parakeet
 
     steps:
       - uses: actions/checkout@v4
