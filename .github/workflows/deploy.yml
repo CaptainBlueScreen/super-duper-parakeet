@@ -45,3 +45,7 @@ jobs:
         uses: 'google-github-actions/setup-gcloud@v1'
         with:
           project_id: '${{ env.PROJECT_ID }}'
+      - id: 'gcloud'
+        name: 'gcloud'
+        run: |-
+          gcloud storage buckets create gs://parakeet-test-bucket
