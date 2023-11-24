@@ -20,9 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    environment:
-      name: parakeet
-
+    environment: parakeet
     steps:
       - uses: actions/checkout@v4
       - name: Cache node modules
