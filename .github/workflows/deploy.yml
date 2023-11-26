@@ -41,22 +41,16 @@ jobs:
         with:
           workload_identity_provider: '${{ secrets.WIF_PROVIDER }}'
           service_account: '${{ secrets.WIF_SERVICE_ACCOUNT }}'
-          create_credentials_file: true
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v1'
         with:
           project_id: '${{ env.PROJECT_ID }}'
-      - id: 'gcloud'
-        name: 'gcloud'
-        run: |-
-          gcloud auth login --brief --cred-file=${{ steps.auth.outputs.credentials_file_path }}
       - id: 'upload-folder'
         uses: 'google-github-actions/upload-cloud-storage@v1'
         with:
           path: './${{ vars.APP_NAME }}/dist/${{ vars.APP_NAME }}/'
           destination: 'parakeet-test-bucket'
-
-      - id: 'gcloud-bucket-test'
+      - id: 'gcloud'
         name: 'gcloud'
         run: |-
           gcloud storage buckets create gs://parakeet-test-bucket2
