@@ -56,7 +56,7 @@ jobs:
           path: './${{ vars.APP_NAME }}/dist/${{ vars.APP_NAME }}/'
           destination: 'parakeet-test-bucket'
 
-      - id: 'gcloud bucket test'
+      - id: 'gcloud-bucket-test'
         name: 'gcloud'
         run: |-
           gcloud storage buckets create gs://parakeet-test-bucket2
